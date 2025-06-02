@@ -138,7 +138,7 @@ const RickChatbot = () => {
             isPlayingAudio={isPlayingAudio}
             isLoading={isLoading}
             modelUrl="/models/correctrick.glb"
-            backgroundImageUrl="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80"
+            backgroundImageUrl="https://res.cloudinary.com/dzq7c0mxt/image/upload/v1748905589/ricckbg_dsjjsi.jpg"
           />
         </div>
 
