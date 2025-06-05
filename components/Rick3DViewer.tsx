@@ -102,12 +102,12 @@ const Rick3DViewer = ({ isPlayingAudio, modelUrl = '/models/correctrick.glb', ba
           (error) => {
             console.error('Error loading background image:', error);
             // Fallback to gradient background
-            scene.background = new THREE.Color(0x1a1a2e);
+            scene.background = new THREE.Color(0x000000);
           }
         );
       } else {
         // Default background color
-        scene.background = new THREE.Color(0x1a1a2e);
+        scene.background = new THREE.Color(0x000000);
       }
 
       const camera = new THREE.PerspectiveCamera(
@@ -120,16 +120,16 @@ const Rick3DViewer = ({ isPlayingAudio, modelUrl = '/models/correctrick.glb', ba
 
       const renderer = new THREE.WebGLRenderer({ 
         antialias: true,
-        alpha: !backgroundImageUrl, // Only use alpha if no background image
+        alpha: false, // Never use alpha so background is always fully visible
         preserveDrawingBuffer: true
       });
       renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      // Add output encoding for proper color display
-      renderer.outputEncoding = THREE.sRGBEncoding;
-      // Tone mapping - comment out if colors appear wrong
+      // Remove output encoding to preserve background image colors
+      // renderer.outputEncoding = THREE.sRGBEncoding;
+      // No tone mapping to ensure accurate colors
       // renderer.toneMapping = THREE.ACESFilmicToneMapping;
       // renderer.toneMappingExposure = 1;
       rendererRef.current = renderer;
@@ -149,20 +149,7 @@ const Rick3DViewer = ({ isPlayingAudio, modelUrl = '/models/correctrick.glb', ba
       directionalLight2.position.set(-5, 5, -5);
       scene.add(directionalLight2);
 
-      // Ground plane - make it transparent if we have a background image
-      const ground = new THREE.Mesh(
-        new THREE.PlaneGeometry(20, 20),
-        new THREE.MeshStandardMaterial({ 
-          color: 0xcccccc,
-          roughness: 0.8,
-          metalness: 0.2,
-          transparent: backgroundImageUrl ? true : false,
-          opacity: backgroundImageUrl ? 0.3 : 1.0
-        })
-      );
-      ground.rotation.x = -Math.PI / 2;
-      ground.receiveShadow = true;
-      scene.add(ground);
+      // Ground plane removed as requested
 
       // Controls
       const controls = new OrbitControls(camera, renderer.domElement);
@@ -444,21 +431,21 @@ const Rick3DViewer = ({ isPlayingAudio, modelUrl = '/models/correctrick.glb', ba
       {!modelLoaded && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="text-center">
-            <div className="text-green-400 text-lg mb-2">Loading model...</div>
+            <div className="text-[#ff5e00] text-lg mb-2">Loading model...</div>
             <div className="w-48 bg-gray-700 rounded-full h-2">
               <div 
-                className="bg-green-400 h-2 rounded-full transition-all duration-300"
+                className="bg-[#ff5e00] h-2 rounded-full transition-all duration-300"
                 style={{ width: `${loadingProgress}%` }}
               />
             </div>
-            <div className="text-green-300 text-sm mt-2">{Math.round(loadingProgress)}%</div>
+            <div className="text-[#ff5e00] text-sm mt-2">{Math.round(loadingProgress)}%</div>
           </div>
         </div>
       )}
       
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="text-red-400 text-center">
+          <div className="text-[#ff5e00] text-center">
             <div className="text-lg mb-2">{error}</div>
             <div className="text-sm">Model path: {modelUrl}</div>
           </div>
