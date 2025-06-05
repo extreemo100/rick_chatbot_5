@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Volume2, RotateCcw, Trash2 } from 'lucide-react';
+import { Send, Volume2, Trash2 } from 'lucide-react';
 import Rick3DViewer from './Rick3DViewer';
 
 const RickChatbot = () => {
@@ -9,6 +9,7 @@ const RickChatbot = () => {
   const [audioUrl, setAudioUrl] = useState(null);
   const [pendingMessage, setPendingMessage] = useState(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [isThinking, setIsThinking] = useState(false); // New state for thinking animation
   const audioRef = useRef(null);
 
   // Handle audio playback when audioUrl updates
@@ -63,6 +64,7 @@ const RickChatbot = () => {
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
+    setIsThinking(true); // Start thinking animation when message is sent
 
     try {
       const response = await fetch('/api/chat', {
@@ -87,6 +89,8 @@ const RickChatbot = () => {
         timestamp: Date.now() 
       };
 
+      setIsThinking(false); // Stop thinking animation when response is received
+
       if (data.audioUrl) {
         setPendingMessage(rickMessage);
         setAudioUrl(data.audioUrl);
@@ -102,6 +106,7 @@ const RickChatbot = () => {
         timestamp: Date.now() 
       };
       setMessages(prev => [...prev, errorMessage]);
+      setIsThinking(false); // Stop thinking animation in case of error
     } finally {
       setIsLoading(false);
     }
@@ -112,6 +117,7 @@ const RickChatbot = () => {
     setAudioUrl(null);
     setPendingMessage(null);
     setIsPlayingAudio(false);
+    setIsThinking(false); // Also reset thinking state
   };
 
   const replayAudio = () => {
@@ -132,17 +138,18 @@ const RickChatbot = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-[#ffffff] to-black">
       <div className="max-w-6xl mx-auto p-4 flex flex-col h-screen">
-        {/* 3D Model Container - Now takes up most of the screen */}
+        {/* 3D Model Container */}
         <div className="flex-1 bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-[#ff5e00] shadow-2xl overflow-hidden mb-4">
           <Rick3DViewer 
             isPlayingAudio={isPlayingAudio}
+            isThinking={isThinking} // Pass the thinking state to the 3D viewer
             isLoading={isLoading}
-            modelUrl="/models/correctrick.glb"
+            modelUrl="/models/rick.glb"
             backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749165382/Portal_Rick_and_Morty_e7yzex.jpg"
           />
         </div>
 
-        {/* Input Area - Fixed at bottom */}
+        {/* Input Area */}
         <div className="bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-[#ff5e00] shadow-2xl p-4">
           {/* Message input */}
           <div className="flex space-x-3">
@@ -153,15 +160,21 @@ const RickChatbot = () => {
               onKeyPress={handleKeyPress}
               placeholder="Ask Rick something..."
               className="flex-1 p-4 bg-black bg-opacity-50 border border-[#ff5e00] rounded-lg text-white placeholder-[#ffffff] focus:outline-none focus:border-[#ff5e00] focus:ring-1 focus:ring-[#ff5e00] text-lg"
-              disabled={isLoading || isPlayingAudio}
+              disabled={isLoading || isPlayingAudio || isThinking} // Also disable when thinking
             />
             <button
               onClick={sendMessage}
-              disabled={isLoading || isPlayingAudio || !inputMessage.trim()}
+              disabled={isLoading || isPlayingAudio || isThinking || !inputMessage.trim()} // Also disable when thinking
               className="px-6 py-4 bg-[#ff5e00] hover:bg-[#ff7e30] disabled:bg-gray-600 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 flex items-center justify-center"
             >
               <Send size={24} />
             </button>
+          </div>
+
+          {/* Chat status indicator - displays what Rick is currently doing */}
+          <div className="text-center text-[#ff5e00] mt-2">
+            {isThinking && <p>Rick is thinking...</p>}
+            {isPlayingAudio && <p>Rick is talking...</p>}
           </div>
 
           {/* Controls */}
@@ -177,7 +190,8 @@ const RickChatbot = () => {
             {audioUrl && (
               <button
                 onClick={replayAudio}
-                className="flex items-center space-x-2 px-4 py-2 bg-[#ff5e00] hover:bg-[#ff7e30] text-white rounded-lg transition-colors duration-200"
+                disabled={isThinking} // Disable replay when thinking
+                className="flex items-center space-x-2 px-4 py-2 bg-[#ff5e00] hover:bg-[#ff7e30] disabled:bg-gray-600 disabled:opacity-50 text-white rounded-lg transition-colors duration-200"
               >
                 <Volume2 size={16} />
                 <span>Replay Audio</span>
