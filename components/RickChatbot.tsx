@@ -130,20 +130,20 @@ const RickChatbot = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-black via-[#ffffff] to-black">
       <div className="max-w-6xl mx-auto p-4 flex flex-col h-screen">
         {/* 3D Model Container - Now takes up most of the screen */}
-        <div className="flex-1 bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-green-400 shadow-2xl overflow-hidden mb-4">
+        <div className="flex-1 bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-[#ff5e00] shadow-2xl overflow-hidden mb-4">
           <Rick3DViewer 
             isPlayingAudio={isPlayingAudio}
             isLoading={isLoading}
             modelUrl="/models/correctrick.glb"
-            backgroundImageUrl="https://res.cloudinary.com/dzq7c0mxt/image/upload/v1748905589/ricckbg_dsjjsi.jpg"
+            backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749164013/Rick_and_Morty_custom_portrait_background_green_portal_qpg1kq.jpg"
           />
         </div>
 
         {/* Input Area - Fixed at bottom */}
-        <div className="bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-green-400 shadow-2xl p-4">
+        <div className="bg-black bg-opacity-30 backdrop-blur-sm rounded-lg border border-[#ff5e00] shadow-2xl p-4">
           {/* Message input */}
           <div className="flex space-x-3">
             <input
@@ -152,13 +152,13 @@ const RickChatbot = () => {
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask Rick something..."
-              className="flex-1 p-4 bg-black bg-opacity-50 border border-green-400 rounded-lg text-white placeholder-green-300 focus:outline-none focus:border-green-300 focus:ring-1 focus:ring-green-300 text-lg"
+              className="flex-1 p-4 bg-black bg-opacity-50 border border-[#ff5e00] rounded-lg text-white placeholder-[#ffffff] focus:outline-none focus:border-[#ff5e00] focus:ring-1 focus:ring-[#ff5e00] text-lg"
               disabled={isLoading || isPlayingAudio}
             />
             <button
               onClick={sendMessage}
               disabled={isLoading || isPlayingAudio || !inputMessage.trim()}
-              className="px-6 py-4 bg-green-600 hover:bg-green-500 disabled:bg-gray-600 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 flex items-center justify-center"
+              className="px-6 py-4 bg-[#ff5e00] hover:bg-[#ff7e30] disabled:bg-gray-600 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 flex items-center justify-center"
             >
               <Send size={24} />
             </button>
@@ -168,7 +168,7 @@ const RickChatbot = () => {
           <div className="flex flex-wrap gap-3 justify-center mt-4">
             <button
               onClick={clearChat}
-              className="flex items-center space-x-2 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors duration-200"
+              className="flex items-center space-x-2 px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-lg transition-colors duration-200 border border-[#ff5e00]"
             >
               <Trash2 size={16} />
               <span>Clear Chat</span>
@@ -177,7 +177,7 @@ const RickChatbot = () => {
             {audioUrl && (
               <button
                 onClick={replayAudio}
-                className="flex items-center space-x-2 px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors duration-200"
+                className="flex items-center space-x-2 px-4 py-2 bg-[#ff5e00] hover:bg-[#ff7e30] text-white rounded-lg transition-colors duration-200"
               >
                 <Volume2 size={16} />
                 <span>Replay Audio</span>
