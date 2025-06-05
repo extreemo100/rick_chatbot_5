@@ -29,28 +29,37 @@ const Rick3DViewer = ({ isPlayingAudio, modelUrl = '/models/correctrick.glb', ba
     model.position.z = -center.z;
     
     const maxDimension = Math.max(size.x, size.y, size.z);
-    const targetSize = 2;
+    // Increase the target size to make Rick larger
+    const targetSize = 3;
     const scale = maxDimension > 0.01 ? targetSize / maxDimension : 1;
     model.scale.setScalar(scale);
     
     const updatedBox = new THREE.Box3().setFromObject(model);
     const updatedSize = updatedBox.getSize(new THREE.Vector3());
-    model.position.y = updatedSize.y / 2;
+    
+    // Lower Rick's vertical position by adding a negative offset
+    // Original: model.position.y = updatedSize.y / 2;
+    // Now we lower by 40% of his height
+    model.position.y = (updatedSize.y / 2) - (updatedSize.y * 0.7);
     
     return { size: updatedSize, center: updatedBox.getCenter(new THREE.Vector3()) };
   };
 
   const adjustCameraForModel = (camera, controls, modelInfo) => {
-    const distance = Math.max(modelInfo.size.x, modelInfo.size.y, modelInfo.size.z) * 2;
-    const height = modelInfo.size.y * 0.6;
+    // Reduce the distance multiplier from 2 to 1.2 to bring Rick closer
+    const distance = Math.max(modelInfo.size.x, modelInfo.size.y, modelInfo.size.z) * 1.2;
+    // Lower the camera target height to match Rick's new lower position
+    const height = modelInfo.size.y * 0.3;
     
-    camera.position.set(distance * 0.8, height + distance * 0.5, distance);
+    // Adjust camera position - reduce z distance to bring Rick closer to the viewer
+    camera.position.set(distance * 0.6, height + distance * 0.4, distance * 0.7);
     camera.lookAt(0, height, 0);
     
     if (controls) {
       controls.target.set(0, height, 0);
-      controls.minDistance = distance * 0.3;
-      controls.maxDistance = distance * 3;
+      // Reduce min and max distance to keep Rick from being moved too far by orbit controls
+      controls.minDistance = distance * 0.2;
+      controls.maxDistance = distance * 2;
       controls.update();
     }
   };
