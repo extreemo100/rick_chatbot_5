@@ -138,7 +138,7 @@ const RickChatbot = () => {
             isPlayingAudio={isPlayingAudio}
             isLoading={isLoading}
             modelUrl="/models/correctrick.glb"
-            backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749164013/Rick_and_Morty_custom_portrait_background_green_portal_qpg1kq.jpg"
+            backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749165382/Portal_Rick_and_Morty_e7yzex.jpg"
           />
         </div>
 
