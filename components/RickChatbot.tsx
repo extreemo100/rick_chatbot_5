@@ -216,7 +216,6 @@ const RickChatbot = () => {
               </button>
             )}
             
-            #{/* Chat History Toggle Button */}
            
           </div>
           
