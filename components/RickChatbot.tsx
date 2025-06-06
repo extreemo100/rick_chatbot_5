@@ -163,7 +163,7 @@ const RickChatbot = () => {
             isThinking={isThinking}
             isLoading={isLoading}
             modelUrl="/models/rick.glb"
-            backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749169683/Creatures_gup2w3.jpg"
+            backgroundImageUrl= "https://res.cloudinary.com/dzq7c0mxt/image/upload/v1749164013/Rick_and_Morty_custom_portrait_background_green_portal_qpg1kq.jpg"
           />
         </div>
 
