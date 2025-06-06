@@ -216,23 +216,8 @@ const RickChatbot = () => {
               </button>
             )}
             
-            {/* Chat History Toggle Button */}
-            <button
-              onClick={toggleChatHistory}
-              className="flex items-center space-x-2 px-4 py-2 bg-black hover:bg-[#1a1a1a] text-white rounded-lg transition-colors duration-200 border border-[#ff5e00]"
-            >
-              {showChatHistory ? (
-                <>
-                  <X size={16} color="#ff5e00" />
-                  <span>Hide Chat</span>
-                </>
-              ) : (
-                <>
-                  <MessageSquare size={16} color="#ff5e00" />
-                  <span>Show Chat</span>
-                </>
-              )}
-            </button>
+            #{/* Chat History Toggle Button */}
+           
           </div>
           
           {/* Chat History - Simplified Implementation */}
