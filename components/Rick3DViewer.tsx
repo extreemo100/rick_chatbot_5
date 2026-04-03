@@ -6,7 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 const Rick3DViewer = ({ 
   isPlayingAudio, 
   isThinking = false, // New prop for thinking state
-  modelUrl = '/models/ib.glb', 
+  modelUrl = '/models/rick.glb', 
   backgroundImageUrl = null, 
   isLoading = false 
 }) => {
